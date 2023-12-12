@@ -1,108 +1,24 @@
-SynologyCloudFlareDDNS
-========================
+# SynologyCloudFlareDDNS <br> (시놀로지에서 Cloudflare DDNS 이용하기, 여러개 등록)
 
-Purpose & Pros
----------------
-* A script for Cloudflare DDNS on Synology DSM.
-* A Minimum Settings required.
-* Uses Cloudflare API v4.
+## 목적 및 특징
 
-Changelog
----------------
-2022.02.14. Supports both "API Tokens" and "Global API Key"
+- 시놀로지DSM에서 클라우드플레어(Cloudflare) DDNS를 이용하기 위한 스크립트입니다.
+- 최소한의 세팅이 필요합니다.
+- 클라우드플레어 v4 API를 사용합니다.
 
-Prerequisites
----------------
-* Have a active Zone in Cloudflare. (Your own domain, too)
-* Have a A Record.
+## 전제조건
 
-Installation - Simple way (requires DSM 7.0+ or Python3 installed)
-----------------
-1. Open **Task Scheduler** (Control Panel - [Services] Task Scheduler)
+- 클라우드플레어에 등록된 도메인이 필요합니다.
+- 클라우드플레어에 DDNS로 사용할 도메인 레코드가 등록되어 있어야 합니다.
 
-2. Create a user-defined script item.
-    Create - Triggered Task - User-defined script
-```
-[General Tab]
-Task: Cloudflare DDNS (not important)
-User: root
-Event: Boot-up
-Pre-task: none
-Enabled: Checked
-```
-```
-[Task Settings Tab]
-[Run Command] User-defined script
-    curl https://raw.githubusercontent.com/namukcom/SynologyCloudflareDDNS/master/setddns.py | python3 -
-```
+## 설치방법 - 쉬운 방법 (DSM 7.0 이상이거나 Python3 설치필요)
 
-3. Press OK
-
-4. Right-Click on the task you've just created.
-
-5. Click Run
-
-6. You can see Cloudflare DDNS has been added to your DDNS list.
-
-7. Setup DDNS in Synology DSM (You can use "API Tokens" or "Global API Key")
-> a. Using API Tokens (Recommended)
->    > (1) Single Domain and single permission can granted with a Token -> more secure<br />
->    > (2) How to create: Cloudflare - My Profile - API Tokens - Create Token (Use "Edit zone DNS" template, required permission: Zone - DNS - Edit)<br />
->    > (3) Synology DDNS Settings
->    > ```
->    > Username: Anything you want(not using when authorize the token)
->    > Password: API Token (40 byte)
->    > ```
->    >    >![Use "Edit zone DNS" Template](https://user-images.githubusercontent.com/51356408/153817729-1b3663a8-b585-4ad6-b785-ba969f054fdc.png)
->    >    >![Check the Permission and Domain name](https://user-images.githubusercontent.com/51356408/153818045-5099b08d-413f-4e56-85b3-9e1540bd5699.png)
->
-> b. Using Global API Key
->    > (1) All permission with a single API Key - less secure<br />
->    > (2) How to view: Cloudflare - My Profile - API Tokens - Global API Key - Click "View"<br />
->    > (3) Synology DDNS Settings
->    > ```
->    > Username: Cloudflare Username
->    > Password: Global API Key (37 byte)
->    > ```
-
-Installation - Another way (DSM 7.0- or  Python3 NOT installed)
-----------------
-1. Connect via SSH. (can be activated in DSM)
-2. Execute 
-```
-sudo curl https://raw.githubusercontent.com/namukcom/SynologyCloudflareDDNS/master/cloudflare.php -o /usr/syno/bin/ddns/cloudflare.php && sudo chmod 755 /usr/syno/bin/ddns/cloudflare.php
-```
-
-3. Add some notes to end of DDNS config file. You can use your preferred text-editor. *(sudo vi /etc.defaults/ddns_provider.conf)*
-```
-[Cloudflare]
-  modulepath=/usr/syno/bin/ddns/cloudflare.php
-  queryurl=https://www.cloudflare.com/
-```
-4. Set up DDNS in DSM (Use your Cloudflare __Global API Key__(can be found in My Profile) as a password)
-
-
-
-SynologyCloudFlareDDNS (시놀로지에서 Cloudflare를 DDNS로 이용하기)
-========================
-
-목적 및 특징
----------------
-* 시놀로지DSM에서 클라우드플레어(Cloudflare) DDNS를 이용하기 위한 스크립트임.
-* 최소한의 세팅이 필요함.
-* 클라우드플레어 v4 API를 사용함.
-
-전제조건
----------------
-* 클라우드플레어에 Zone을 등록하여야 함(자기만의 도메인도 필요함)
-* 클라우드플레어에 DDNS로 사용할 도메인 레코드가 등록되어 있어야 함.
-
-설치방법 - 쉬운 방법 (DSM 7.0 이상이거나 Python3 설치필요)
-----------------
 1. 제어판에서 **작업 스케줄러**를 실행합니다.
-
+   ![Synology-Cloudflare-DDNS-Multi-01.png](./statics/image/Synology-Cloudflare-DDNS-Multi-01.png)
 2. **사용자 정의 스크립트**를 생성합니다.
-    생성 - 트리거된 작업 - 사용자 정의 스크립트
+   생성 - 트리거된 작업 - 사용자 정의 스크립트
+   ![Synology-Cloudflare-DDNS-Multi-02.png](./statics/image/Synology-Cloudflare-DDNS-Multi-02.png)
+
 ```
 [일반설정]
 작업: Cloudflare DDNS (중요하지않음)
@@ -111,11 +27,26 @@ SynologyCloudFlareDDNS (시놀로지에서 Cloudflare를 DDNS로 이용하기)
 사전 작업: 없음
 활성화됨: 체크
 ```
-```
-[작업 설정]
-[실행명령] 사용자 정의 스크립트
-    curl https://raw.githubusercontent.com/namukcom/SynologyCloudflareDDNS/master/setddns.py | python3 -
-```
+
+![Synology-Cloudflare-DDNS-Multi-03.png](./statics/image/Synology-Cloudflare-DDNS-Multi-03.png)
+
+"작업 설정" - "실행명령" - "사용자 정의 스크립트" <br>
+
+> [!TIP]
+> 한개를 등록하려면
+>
+> ```bash
+> curl https://raw.githubusercontent.com/NavyStack/SynologyCloudFlareDDNS-WithMultiple/master/setddns.py | python3 -
+> ```
+
+> [!TIP]
+> 여러개를 등록하려면
+>
+> ```bash
+> curl https://raw.githubusercontent.com/NavyStack/SynologyCloudFlareDDNS-WithMultiple/master/setddns-with-multi.py | python3 -
+> ```
+
+![Synology-Cloudflare-DDNS-Multi-04.png](./statics/image/Synology-Cloudflare-DDNS-Multi-04.png)
 
 3. **확인**을 누릅니다.
 
@@ -126,31 +57,41 @@ SynologyCloudFlareDDNS (시놀로지에서 Cloudflare를 DDNS로 이용하기)
 6. DDNS 목록에 **Cloudflare**가 추가된 것을 확인할 수 있습니다.
 
 7. 시놀로지 DSM에서 DDNS 설정을 합니다. (2가지 방식 중 하나 선택)
-> 가. API Tokens 사용하기 (권장)
->    > (1) 한개의 토큰으로 특정 도메인 및 권한만 부여하여 사용할 수 있어 유출시에도 다른 도메인이나 권한이 없는 영역에 접근 불가 -> 보안상 이점 가짐<br />
->    > (2) 생성방법: Cloudflare - My Profile - API Tokens - Create Token ("Edit zone DNS" 템플릿 사용, 필요한 권한: Zone - DNS - Edit)<br />
->    > (3) Synology 설정에서 패스워드/키 칸에 생성된 API Token (40 바이트)을 입력하면 됩니다.(사용자 이름/이메일은 아무값이나 입력)
->    >    >![Use "Edit zone DNS" Template](https://user-images.githubusercontent.com/51356408/153817729-1b3663a8-b585-4ad6-b785-ba969f054fdc.png)
->    >    >![Check the Permission and Domain name](https://user-images.githubusercontent.com/51356408/153818045-5099b08d-413f-4e56-85b3-9e1540bd5699.png)
+
+> [!IMPORTANT]
+> API Tokens 사용하기 **(권장)** <br><br>
 >
-> 나. Global API Key 사용하기
->    > (1) 한개의 키로 모든 권한을 가짐 - 보안상 취약<br />
->    > (2) 확인방법: Cloudflare - My Profile - API Tokens - Global API Key - View 클릭<br />
->    > (3) Synology 설정에서 패스워드/키 칸에 확인된 Global API Key (37 바이트)를 입력하면 됩니다.(사용자 이름/이메일은 Cloudflare 계정 입력)
+> - 특정 도메인 및 권한을 최소 부여하여 유출에도 권한이 없는 영역에 접근 불가 **(보안상 이점)**<br>
+> - 생성방법: Cloudflare - My Profile - API Tokens - Create Token <br> ("Edit zone DNS" 템플릿 사용, 필요한 권한: Zone - DNS - Edit)
+> - Synology 설정에서 패스워드/키 칸에 생성된 API Token (40 바이트)을 입력. <br>(사용자 이름/이메일은 아무값이나 입력)
 
+![Synology-Cloudflare-DDNS-Multi-05.png](./statics/image/Synology-Cloudflare-DDNS-Multi-05.png) <br><br> ![Synology-Cloudflare-DDNS-Multi-06.png](./statics/image/Synology-Cloudflare-DDNS-Multi-06.png) <br><br> ![Synology-Cloudflare-DDNS-Multi-07.png](./statics/image/Synology-Cloudflare-DDNS-Multi-07.png)
 
-설치방법 - 다른 방법(DSM 7.0 이하이거나 Python3가 설치되지 않은 경우)
-----------------
+> [!CAUTION]
+> Global API Key 사용하기 **(보안상 취약)** <br><br>
+>
+> - 한개의 키로 모든 권한을 가짐 <br>
+> - 확인방법: Cloudflare - My Profile - API Tokens - Global API Key - View 클릭 <br>
+> - Synology 설정에서 패스워드/키 칸에 확인된 Global API Key (37 바이트)를 입력하면 됩니다. <br>(사용자 이름/이메일은 Cloudflare 계정 입력)
+
+## 설치방법 - 다른 방법(DSM 7.0 이하이거나 Python3가 설치되지 않은 경우)
+
 1. SSH로 접속합니다. (DSM 설정에서 활성화 할 수 있습니다.)
 2. 다음의 명령을 실행합니다.
-```
-sudo curl https://raw.githubusercontent.com/namukcom/SynologyCloudflareDDNS/master/cloudflare.php -o /usr/syno/bin/ddns/cloudflare.php && sudo chmod 755 /usr/syno/bin/ddns/cloudflare.php
+
+```bash
+sudo curl \
+https://raw.githubusercontent.com/NavyStack/SynologyCloudFlareDDNS-WithMultiple/master/cloudflare.php \
+-o /usr/syno/bin/ddns/cloudflare.php && \
+sudo chmod 755 /usr/syno/bin/ddns/cloudflare.php
 ```
 
-3. DDNS 설정 파일에 다음의 내용을 추가합니다. 마음에 드는 편집기로 수정하시기 바랍니다. *(sudo vi /etc.defaults/ddns_provider.conf)*
-```
+3. DDNS 설정 파일에 다음의 내용을 추가합니다. 마음에 드는 편집기로 수정하시기 바랍니다. _(sudo vi /etc.defaults/ddns_provider.conf)_
+
+```php
 [Cloudflare]
-  modulepath=/usr/syno/bin/ddns/cloudflare.php
-  queryurl=https://www.cloudflare.com/
+modulepath=/usr/syno/bin/ddns/cloudflare.php
+queryurl=https://www.cloudflare.com/
 ```
-4. 시놀로지 DSM에서 DDNS 설정을 합니다. (클라우드플레어 __Global API Key__(클라우드플레어 My Profile메뉴밑에 있음)를 비밀번호로 입력하면 됩니다.)
+
+4. 시놀로지 DSM에서 DDNS 설정을 합니다. (클라우드플레어 **Global API Key**(클라우드플레어 My Profile메뉴밑에 있음)를 비밀번호로 입력하면 됩니다.)
